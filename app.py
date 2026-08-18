@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, jsonify
 
 # ---------------- SETTINGS ----------------
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "rajnees.choudhari@gmail.com")
-APP_PASSWORD = os.environ.get("APP_PASSWORD", "dvbkeywhbeduoxjb")
+APP_PASSWORD = os.environ.get("APP_PASSWORD", "babhiblmcaepweeo")
 PANEL_PASSWORD = os.environ.get("PANEL_PASSWORD", "solar27")
 # ------------------------------------------
 
