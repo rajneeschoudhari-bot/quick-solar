@@ -1,19 +1,11 @@
 import os
 import io
 import socket
+import ssl
 import smtplib
 import requests
 from email.message import EmailMessage
-from flask import Flask, render_template, request, jsonify, send_file, Response
-
-# ---------------- FORCE IPv4 (Fixes Render [Errno 101] Network is unreachable) ----------------
-orig_getaddrinfo = socket.getaddrinfo
-
-def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
-    return orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
-
-socket.getaddrinfo = getaddrinfo_ipv4
-# -----------------------------------------------------------------------------------------------
+from flask import Flask, render_template, request, jsonify
 
 # Helper functions to get clean config settings
 def get_sender_email():
@@ -100,6 +92,48 @@ def download_resume():
     return None
 
 
+def get_smtp_connection(sender, password):
+    """Connect to Gmail SMTP reliably handling cloud network IPv4 routing."""
+    # 1. Try standard host connection
+    try:
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15)
+        server.login(sender, password)
+        return server
+    except Exception as e1:
+        print(f"Standard SSL failed: {e1}, trying IPv4 direct socket...")
+
+    # 2. Try IPv4 direct socket for Port 465 (Bypasses Render IPv6 Unreachable Errno 101)
+    try:
+        ipv4_list = [addr[4][0] for addr in socket.getaddrinfo("smtp.gmail.com", 465, socket.AF_INET, socket.SOCK_STREAM)]
+        for ip in ipv4_list:
+            try:
+                raw_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                raw_sock.settimeout(15)
+                raw_sock.connect((ip, 465))
+                ctx = ssl.create_default_context()
+                ssl_sock = ctx.wrap_socket(raw_sock, server_hostname="smtp.gmail.com")
+
+                server = smtplib.SMTP_SSL(timeout=15)
+                server.sock = ssl_sock
+                server.file = ssl_sock.makefile("rb")
+                server.getreply()
+                server.ehlo("smtp.gmail.com")
+                server.login(sender, password)
+                return server
+            except Exception as ex_ip:
+                print(f"IP {ip} failed: {ex_ip}")
+    except Exception as e2:
+        print(f"IPv4 SSL failed: {e2}, trying port 587...")
+
+    # 3. Try Port 587 (STARTTLS)
+    server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login(sender, password)
+    return server
+
+
 # Home Page
 @app.route("/")
 def home():
@@ -177,28 +211,10 @@ def send_email():
     success_count = 0
 
     try:
-        # Connect to SMTP (tries Port 587 with STARTTLS, then Port 465 with SSL)
-        smtp_connected = False
-        smtp_server = None
+        # Connect to Gmail SMTP using resilient multi-tier connector
+        smtp_server = get_smtp_connection(sender, password)
 
-        # Attempt 1: Port 587 (Standard for Cloud Hosts)
-        try:
-            smtp_server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
-            smtp_server.ehlo()
-            smtp_server.starttls()
-            smtp_server.ehlo()
-            smtp_server.login(sender, password)
-            smtp_connected = True
-        except Exception as e587:
-            print(f"Port 587 failed: {e587}, trying port 465...")
-
-        # Attempt 2: Port 465 (SSL)
-        if not smtp_connected:
-            smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20)
-            smtp_server.login(sender, password)
-            smtp_connected = True
-
-        # Send all emails through open connection
+        # Send all emails through the active connection
         for receiver in receivers:
             msg = EmailMessage()
             msg["Subject"] = custom_subject
