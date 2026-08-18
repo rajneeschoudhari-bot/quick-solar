@@ -737,6 +737,14 @@
 
             <hr class="divider">
 
+            <!-- Brevo Cloud API Key (For 100% Reliable Render Delivery) -->
+            <label>⚡ Brevo API Key <span style="font-size:11px;color:#ffd700;">(Required for Render Live)</span></label>
+            <input type="password" id="brevoApiKey" placeholder="xkeysib-xxxxxxxxxxxxxxxx">
+            <button class="btn-action" style="background:#0d6efd;color:#fff;" onclick="saveBrevoKey()">🔑 Save API Key</button>
+            <div class="panel-status" id="brevoStatus"></div>
+
+            <hr class="divider">
+
             <!-- Email Subject & Pitch -->
             <label>📌 Email Subject</label>
             <input type="text" id="emailSubject" placeholder="Application for Solar / O&M Engineer Role">
@@ -834,6 +842,9 @@
                 if (data.body) {
                     document.getElementById('emailBody').value = data.body;
                 }
+                if (data.brevo_api_key) {
+                    document.getElementById('brevoApiKey').value = data.brevo_api_key;
+                }
             } catch (e) {
                 document.getElementById('sourceInfo').textContent = '⚠️ Could not load status';
             }
@@ -854,6 +865,25 @@
                 st.className = data.success ? 'panel-status s-ok' : 'panel-status s-err';
                 st.textContent = data.message;
                 if (data.success) loadCurrentLink();
+            } catch (e) {
+                st.className='panel-status s-err'; st.textContent='Network error!';
+            }
+        }
+
+        // ===== SAVE BREVO KEY =====
+        async function saveBrevoKey() {
+            const key = document.getElementById('brevoApiKey').value.trim();
+            const st = document.getElementById('brevoStatus');
+            if (!key) { st.className='panel-status s-err'; st.textContent='Enter Brevo API key!'; return; }
+            try {
+                const res = await fetch('/update-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brevo_api_key: key })
+                });
+                const data = await res.json();
+                st.className = data.success ? 'panel-status s-ok' : 'panel-status s-err';
+                st.textContent = 'Brevo API Key saved! Cloud sending is active ⚡';
             } catch (e) {
                 st.className='panel-status s-err'; st.textContent='Network error!';
             }

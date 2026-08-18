@@ -3,6 +3,7 @@ import io
 import socket
 import ssl
 import smtplib
+import base64
 import requests
 from email.message import EmailMessage
 from flask import Flask, render_template, request, jsonify
@@ -16,6 +17,9 @@ def get_app_password():
 
 def get_panel_password():
     return os.environ.get("PANEL_PASSWORD", "solar27").strip()
+
+def get_brevo_api_key():
+    return app_state.get("brevo_api_key", "").strip() or os.environ.get("BREVO_API_KEY", "").strip()
 
 # Default High-Impact Email Subject & Body
 DEFAULT_SUBJECT = "Application for Solar / O&M Engineer Role - Rajneesh Choudhary"
@@ -40,14 +44,15 @@ Rajneesh Choudhary
 rajnees.choudhari@gmail.com
 """
 
-# Google Drive Resume Link
+# App Global State (modifiable from Control Panel)
 app_state = {
     "resume_url": os.environ.get(
         "RESUME_URL", 
         "https://drive.google.com/file/d/1Uqpnxcekhy1pSZgCfC2uPEftnyQzm2Lr/view?usp=sharing"
     ).strip(),
     "subject": DEFAULT_SUBJECT,
-    "body": DEFAULT_BODY
+    "body": DEFAULT_BODY,
+    "brevo_api_key": os.environ.get("BREVO_API_KEY", "").strip()
 }
 
 # Local fallback resume path
@@ -92,46 +97,82 @@ def download_resume():
     return None
 
 
-def get_smtp_connection(sender, password):
-    """Connect to Gmail SMTP reliably handling cloud network IPv4 routing."""
-    # 1. Try standard host connection
+def send_via_brevo_api(api_key, sender_email, receivers, subject, body, resume_data):
+    """Send emails via Brevo HTTPS REST API (Port 443 - Never blocked on Render)."""
+    resume_b64 = base64.b64encode(resume_data).decode("utf-8")
+    headers = {
+        "api-key": api_key,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+    
+    success_count = 0
+    for receiver in receivers:
+        payload = {
+            "sender": {
+                "name": "Rajneesh Choudhary",
+                "email": sender_email
+            },
+            "to": [{"email": receiver}],
+            "subject": subject,
+            "textContent": body,
+            "attachment": [
+                {
+                    "name": "Rajneesh_Choudhary_Resume.pdf",
+                    "content": resume_b64
+                }
+            ]
+        }
+        res = requests.post("https://api.brevo.com/v3/smtp/email", headers=headers, json=payload, timeout=20)
+        if res.status_code in [200, 201, 202]:
+            success_count += 1
+        else:
+            try:
+                err_data = res.json()
+                msg = err_data.get("message", res.text)
+            except Exception:
+                msg = res.text
+            raise Exception(f"Brevo API: {msg}")
+            
+    return success_count
+
+
+def send_via_smtp_fallback(sender, password, receivers, subject, body, resume_data):
+    """Send emails via Gmail SMTP (for local development or supported clouds)."""
+    server = None
     try:
         server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15)
         server.login(sender, password)
-        return server
-    except Exception as e1:
-        print(f"Standard SSL failed: {e1}, trying IPv4 direct socket...")
+    except Exception:
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(sender, password)
 
-    # 2. Try IPv4 direct socket for Port 465 (Bypasses Render IPv6 Unreachable Errno 101)
+    success_count = 0
+    for receiver in receivers:
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"] = sender
+        msg["To"] = receiver
+        msg.set_content(body)
+
+        msg.add_attachment(
+            resume_data,
+            maintype="application",
+            subtype="pdf",
+            filename="Rajneesh_Choudhary_Resume.pdf"
+        )
+        server.send_message(msg)
+        success_count += 1
+
     try:
-        ipv4_list = [addr[4][0] for addr in socket.getaddrinfo("smtp.gmail.com", 465, socket.AF_INET, socket.SOCK_STREAM)]
-        for ip in ipv4_list:
-            try:
-                raw_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                raw_sock.settimeout(15)
-                raw_sock.connect((ip, 465))
-                ctx = ssl.create_default_context()
-                ssl_sock = ctx.wrap_socket(raw_sock, server_hostname="smtp.gmail.com")
+        server.quit()
+    except Exception:
+        pass
 
-                server = smtplib.SMTP_SSL(timeout=15)
-                server.sock = ssl_sock
-                server.file = ssl_sock.makefile("rb")
-                server.getreply()
-                server.ehlo("smtp.gmail.com")
-                server.login(sender, password)
-                return server
-            except Exception as ex_ip:
-                print(f"IP {ip} failed: {ex_ip}")
-    except Exception as e2:
-        print(f"IPv4 SSL failed: {e2}, trying port 587...")
-
-    # 3. Try Port 587 (STARTTLS)
-    server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
-    server.ehlo()
-    server.starttls()
-    server.ehlo()
-    server.login(sender, password)
-    return server
+    return success_count
 
 
 # Home Page
@@ -149,17 +190,19 @@ def get_link():
         "resume_url": app_state["resume_url"],
         "source": "Google Drive" if app_state["resume_url"] else "Local File",
         "subject": app_state.get("subject", DEFAULT_SUBJECT),
-        "body": app_state.get("body", DEFAULT_BODY)
+        "body": app_state.get("body", DEFAULT_BODY),
+        "brevo_api_key": app_state.get("brevo_api_key", "")
     })
 
 
-# Update resume link and template from UI
+# Update settings from UI
 @app.route("/update-link", methods=["POST"])
 def update_link():
     data = request.get_json(silent=True) or {}
     new_url = data.get("resume_url", "").strip()
     new_subject = data.get("subject", "").strip()
     new_body = data.get("body", "").strip()
+    new_brevo_key = data.get("brevo_api_key", "").strip()
 
     if new_url:
         if "drive.google.com" not in new_url:
@@ -170,6 +213,8 @@ def update_link():
         app_state["subject"] = new_subject
     if new_body:
         app_state["body"] = new_body
+    if "brevo_api_key" in data:
+        app_state["brevo_api_key"] = new_brevo_key
 
     return jsonify({"success": True, "message": "Settings updated successfully! ✅"})
 
@@ -195,58 +240,44 @@ def send_email():
     if not emails_text:
         return jsonify({"success": False, "message": "Please enter HR emails"})
 
-    # Convert into list
     receivers = [email.strip() for email in emails_text.split(",") if email.strip()]
-
     if not receivers:
         return jsonify({"success": False, "message": "No valid emails found"})
 
-    # Download resume first
+    # Download resume
     resume_data = download_resume()
     if not resume_data:
         return jsonify({"success": False, "message": "Resume not found! Please check RESUME_URL or place resume.pdf in app folder."})
 
     sender = get_sender_email()
-    password = get_app_password()
-    success_count = 0
+    brevo_key = get_brevo_api_key()
 
-    try:
-        # Connect to Gmail SMTP using resilient multi-tier connector
-        smtp_server = get_smtp_connection(sender, password)
-
-        # Send all emails through the active connection
-        for receiver in receivers:
-            msg = EmailMessage()
-            msg["Subject"] = custom_subject
-            msg["From"] = sender
-            msg["To"] = receiver
-            msg.set_content(custom_body)
-
-            # Attach Resume
-            msg.add_attachment(
-                resume_data,
-                maintype="application",
-                subtype="pdf",
-                filename="Rajneesh_Choudhary_Resume.pdf"
-            )
-
-            smtp_server.send_message(msg)
-            success_count += 1
-
+    # Method 1: If Brevo API Key is present, use HTTP REST API (Best for Render Free Tier)
+    if brevo_key:
         try:
-            smtp_server.quit()
-        except Exception:
-            pass
+            count = send_via_brevo_api(brevo_key, sender, receivers, custom_subject, custom_body, resume_data)
+            return jsonify({
+                "success": True,
+                "message": f"Successfully sent {count} email(s) via HTTPS API! 🚀"
+            })
+        except Exception as e:
+            return jsonify({
+                "success": False,
+                "message": str(e)
+            })
 
+    # Method 2: Fallback to Direct Gmail SMTP
+    try:
+        password = get_app_password()
+        count = send_via_smtp_fallback(sender, password, receivers, custom_subject, custom_body, resume_data)
         return jsonify({
             "success": True,
-            "message": f"Successfully sent {success_count} email(s)!"
+            "message": f"Successfully sent {count} email(s) via SMTP!"
         })
-
     except Exception as e:
         return jsonify({
             "success": False,
-            "message": f"Error after sending {success_count} email(s): {str(e)}"
+            "message": f"SMTP Error: {str(e)}. (Tip: Set Brevo API Key in panel for 100% reliable cloud delivery)"
         })
 
 

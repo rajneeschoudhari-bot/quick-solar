@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajneesh Choudhary — Electrical & Solar PV O&M Engineer | Portfolio</title>
+  <meta name="description" content="Official Portfolio & Resume of Rajneesh Choudhary — Electrical & Electronics Engineer (GATE Qualified), Solar PV O&M Specialist managing 15 solar plants (200-500 kW).">
+  
+  <!-- Favicon Icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+
+  <!-- External Styles & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       CUSTOM GLOWING PHOTON CURSOR
+       ========================================== -->
+  <div class="custom-cursor-dot"></div>
+  <div class="custom-cursor-aura"></div>
+
+  <!-- ==========================================
+       CINEMATIC SOLAR STARTUP LOADER
+       ========================================== -->
+  <div id="solar-loader">
+    <div class="loader-solar-cell">
+      <div class="loader-sun-ring"></div>
+      <div class="loader-hexagon">
+        <div class="loader-hex-grid">
+          <i class="fa-solid fa-sun loader-sun-core"></i>
+        </div>
+      </div>
+    </div>
+    <div class="loader-text-wrap">
+      <h2 class="loader-title">POWERING <span>SOLAR GRID</span></h2>
+      <p class="loader-subtitle">⚡ INITIALIZING PHOTOVOLTAIC SENSORS...</p>
+      <div class="loader-progress-bar">
+        <div class="loader-progress-fill"></div>
+      </div>
+      <div class="loader-stats">
+        <span>GRID SYNC</span>
+        <span class="loader-percent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       AMBIENT GLOWS & CANVAS BACKGROUND
+       ========================================== -->
+  <div id="bg-canvas-container">
+    <canvas id="particle-canvas"></canvas>
+    <div class="ambient-glow-orb orb-1"></div>
+    <div class="ambient-glow-orb orb-2"></div>
+    <div class="ambient-glow-orb orb-3"></div>
+  </div>
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- ==========================================
+       NAVIGATION BAR
+       ========================================== -->
+  <header class="site-header">
+    <a href="#hero" class="brand-logo">
+      <div class="logo-badge-icon">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">RAJNEESH <span>CHOUDHARY</span></span>
+        <span class="logo-subtitle">SOLAR & ELECTRICAL ENGINEER</span>
+      </div>
+    </a>
+
+    <ul class="nav-links-wrap">
+      <li><a href="#hero" class="nav-link active">Home</a></li>
+      <li><a href="#operations" class="nav-link">Operations</a></li>
+      <li><a href="#solar-lab" class="nav-link">Solar Lab</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#education" class="nav-link">Education</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="header-actions">
+      <!-- Sound FX Toggle Button -->
+      <button class="btn-sound-toggle" id="soundToggleBtn" title="Toggle Sound FX">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+
+      <!-- Quick Hire / Contact Modal Trigger -->
+      <button class="btn-nav-hire open-hire-modal">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Hire Me</span>
+      </button>
+
+      <!-- Mobile Menu Button -->
+      <button class="btn-mobile-menu" id="mobileMenuBtn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN CONTENT CONTAINER
+       ========================================== -->
+  <main class="main-wrapper">
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-grid">
+        
+        <!-- Left Hero Content -->
+        <div class="hero-content">
+          <div class="hero-status-pill">
+            <span class="status-dot-pulse"></span>
+            <span class="status-text">⚡ Managing 15 Solar Plants (200–500 kW) • GATE Qualified</span>
+          </div>
+
+          <span class="hero-title-greeting">HELLO WORLD, I AM</span>
+          <h1 class="hero-main-name">
+            <span class="name-gradient-text">Rajneesh Choudhary</span>
+          </h1>
+
+          <div class="hero-role-typing-wrap">
+            <span class="typing-prefix">> </span>
+            <span class="typing-dynamic-text">Solar PV O&M Engineer</span>
+          </div>
+
+          <p class="hero-description">
+            High-performance <strong>Electrical & Electronics Engineer</strong> with hands-on experience in 
+            <strong>Solar PV Operations & Maintenance (O&M)</strong>, Preventive & Corrective Maintenance (PM/CM), 
+            string testing, inverter diagnostics, and Earth Resistance Testing (ERT). Passionate about maximizing clean energy yield and zero-downtime grid reliability.
+          </p>
+
+          <div class="hero-highlights-list">
+            <div class="hero-chip-tag">
+              <i class="fa-solid fa-solar-panel"></i>
+              <span>15 Solar Plants (200-500 kW)</span>
+            </div>
+            <div class="hero-chip-tag">
+              <i class="fa-solid fa-award"></i>
+              <span>GATE 2021 Qualified</span>
+            </div>
+            <div class="hero-chip-tag">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <span>M.E. & B.Tech (CGPA 8.39)</span>
+            </div>
+            <div class="hero-chip-tag">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Kangra, Himachal Pradesh</span>
+            </div>
+          </div>
+
+          <div class="hero-cta-group">
+            <!-- Direct Resume Download -->
+            <a href="resume.pdf" download="Rajneesh_Choudhary_Resume.pdf" class="btn-primary-solar">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>Download CV (PDF)</span>
+            </a>
+
+            <!-- Interactive Solar Lab CTA -->
+            <a href="#solar-lab" class="btn-secondary-quantum">
+              <i class="fa-solid fa-microchip"></i>
+              <span>Launch Solar Lab</span>
+            </a>
+
+            <!-- Hire Modal -->
+            <button class="btn-ghost-contact open-hire-modal">
+              <i class="fa-solid fa-envelope-open-text"></i>
+              <span>Contact Directly</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Hero Visual Card (Portrait & 3D Stage Switcher) -->
+        <div class="hero-visual-card">
+          <div class="solar-matrix-frame">
+            <div class="matrix-header">
+              <!-- Visual Switcher -->
+              <div class="hero-view-toggle">
+                <button class="btn-hero-toggle active" id="btnShowPortrait">
+                  <i class="fa-solid fa-user-tie"></i>
+                  <span>Profile</span>
+                </button>
+                <button class="btn-hero-toggle" id="btnShow3D">
+                  <i class="fa-solid fa-cube"></i>
+                  <span>3D Solar</span>
+                </button>
+              </div>
+
+              <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span>ACTIVE O&M</span>
+              </div>
+            </div>
+
+            <!-- View 1: Real Portrait Stage -->
+            <div class="hero-portrait-stage" id="portraitStage">
+              <img src="profile.jpg" alt="Rajneesh Choudhary" class="hero-portrait-img">
+              <div class="portrait-gradient-overlay"></div>
+              <div class="portrait-footer-info">
+                <div class="p-name-badge">
+                  <h3>Rajneesh Choudhary</h3>
+                  <p>Electrical & Solar O&M Engineer</p>
+                </div>
+                <div class="p-gate-tag">
+                  <i class="fa-solid fa-award"></i> GATE 2021
+                </div>
+              </div>
+            </div>
+
+            <!-- View 2: 3D Interactive Three.js Canvas Stage -->
+            <div class="solar-canvas-stage" id="threeStage">
+              <canvas id="hero-interactive-3d-canvas"></canvas>
+              <div class="stage-overlay-stats">
+                <span>ARRAY: <strong>MONO PERC</strong></span>
+                <span>EFFICIENCY: <strong>21.8%</strong></span>
+                <span>ERT: <strong>1.8 Ω (PASS)</strong></span>
+              </div>
+            </div>
+
+            <!-- Fast Metrics Grid -->
+            <div class="matrix-stats-grid">
+              <div class="matrix-stat-box">
+                <div class="stat-label">Generation Capacity</div>
+                <div class="stat-val">6.5 <small>MW</small></div>
+              </div>
+              <div class="matrix-stat-box">
+                <div class="stat-label">Active Plants</div>
+                <div class="stat-val">15 <small>Sites</small></div>
+              </div>
+              <div class="matrix-stat-box">
+                <div class="stat-label">Grid Uptime</div>
+                <div class="stat-val">99.8 <small>%</small></div>
+              </div>
+              <div class="matrix-stat-box">
+                <div class="stat-label">Site Manpower</div>
+                <div class="stat-val">40+ <small>Crew</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         LIVE METRICS COUNTER BAR
+         ========================================== -->
+    <section class="live-counter-section" id="operations">
+      <div class="stats-glass-container">
+        
+        <div class="stat-counter-card">
+          <div class="stat-counter-icon"><i class="fa-solid fa-solar-panel"></i></div>
+          <div class="stat-number-wrap">
+            <span class="count-num" data-target="15">0</span>
+            <span class="count-suffix">+</span>
+          </div>
+          <div class="stat-counter-title">Solar Power Plants</div>
+          <div class="stat-counter-sub">200–500 kW Capacity Each</div>
+        </div>
+
+        <div class="stat-counter-card">
+          <div class="stat-counter-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="stat-number-wrap">
+            <span class="count-num" data-target="6.5">0</span>
+            <span class="count-suffix">MW</span>
+          </div>
+          <div class="stat-counter-title">Clean Energy Managed</div>
+          <div class="stat-counter-sub">High Yield Optimization</div>
+        </div>
+
+        <div class="stat-counter-card">
+          <div class="stat-counter-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="stat-number-wrap">
+            <span class="count-num" data-target="99.8">0</span>
+            <span class="count-suffix">%</span>
+          </div>
+          <div class="stat-counter-title">Plant Reliability & Uptime</div>
+          <div class="stat-counter-sub">Preventive & Corrective Maintenance</div>
+        </div>
+
+        <div class="stat-counter-card">
+          <div class="stat-counter-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="stat-number-wrap">
+            <span class="count-num" data-target="40">0</span>
+            <span class="count-suffix">+</span>
+          </div>
+          <div class="stat-counter-title">Manpower & Technicians Led</div>
+          <div class="stat-counter-sub">Daily Progress Reporting (DPR)</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         INTERACTIVE SOLAR ENGINEERING LAB
+         ========================================== -->
+    <section class="section-wrapper" id="solar-lab">
+      <div class="section-header-center">
+        <div class="section-pill-tag">
+          <i class="fa-solid fa-flask-vial"></i>
+          <span>Live Interactive Engineering Simulators</span>
+        </div>
+        <h2 class="section-main-heading">
+          SOLAR & INVERTER <span>LABORATORY</span>
+        </h2>
+        <p class="section-subtext">
+          Experience interactive demonstrations of real-world solar electrical engineering concepts, 
+          inverter pure sine wave synthesis, multi-string fault diagnosis, and dual-axis solar tracking.
+        </p>
+      </div>
+
+      <div class="solar-lab-container">
+        <!-- Lab Tab Switcher -->
+        <div class="lab-tab-bar">
+          <button class="lab-tab-btn active" data-tab="tab-inverter">
+            <i class="fa-solid fa-wave-square"></i>
+            <span>Pure Sine Wave Inverter</span>
+          </button>
+          <button class="lab-tab-btn" data-tab="tab-string">
+            <i class="fa-solid fa-network-wired"></i>
+            <span>String & ERT Diagnostics</span>
+          </button>
+          <button class="lab-tab-btn" data-tab="tab-tracker">
+            <i class="fa-solid fa-compass"></i>
+            <span>Dual-Axis Sun Tracker</span>
+          </button>
+        </div>
+
+        <!-- LAB 1: Inverter Sine Wave Simulator -->
+        <div class="lab-view-panel active" id="tab-inverter">
+          <div class="oscillo-grid">
+            <div class="oscillo-screen-box">
+              <canvas id="oscillo-canvas"></canvas>
+            </div>
+
+            <div class="oscillo-controls">
+              <!-- Frequency -->
+              <div class="control-group">
+                <div class="control-label-row">
+                  <label>AC Frequency (Grid Sync)</label>
+                  <span id="freqDisplay">50 Hz</span>
+                </div>
+                <input type="range" class="cyber-range" id="freqSlider" min="20" max="100" value="50">
+              </div>
+
+              <!-- Voltage Amplitude -->
+              <div class="control-group">
+                <div class="control-label-row">
+                  <label>Output Voltage (RMS)</label>
+                  <span id="voltDisplay">220 V</span>
+                </div>
+                <input type="range" class="cyber-range" id="voltSlider" min="100" max="240" value="220">
+              </div>
+
+              <!-- THD % -->
+              <div class="control-group">
+                <div class="control-label-row">
+                  <label>Harmonic Distortion (THD)</label>
+                  <span id="thdDisplay">2%</span>
+                </div>
+                <input type="range" class="cyber-range" id="thdSlider" min="0" max="30" value="2">
+              </div>
+
+              <!-- Waveform Mode -->
+              <div class="control-group">
+                <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">Waveform Technology</label>
+                <div class="wave-type-selector">
+                  <button class="btn-wave-mode active" data-mode="pure">Pure Sine</button>
+                  <button class="btn-wave-mode" data-mode="modified">Modified</button>
+                  <button class="btn-wave-mode" data-mode="square">Square</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAB 2: String Testing & ERT Diagnostic Widget -->
+        <div class="lab-view-panel" id="tab-string">
+          <div class="string-tester-grid">
+            
+            <!-- Array String Selector -->
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 12px; color: var(--cyan-neon); margin-bottom: 14px;">
+                ⚡ SELECT PV STRING TO RUN MULTIMETER / ERT DIAGNOSTICS:
+              </p>
+              <div class="string-array-matrix">
+                <div class="string-test-card" data-str-id="1">
+                  <div class="string-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div class="string-name">String #1</div>
+                  <span class="string-status-badge status-normal">Normal</span>
+                </div>
+                <div class="string-test-card" data-str-id="2">
+                  <div class="string-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div class="string-name">String #2</div>
+                  <span class="string-status-badge status-normal">Normal</span>
+                </div>
+                <div class="string-test-card faulty active-selected" data-str-id="3">
+                  <div class="string-icon"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i></div>
+                  <div class="string-name">String #3</div>
+                  <span class="string-status-badge status-fault">Fault Detected</span>
+                </div>
+                <div class="string-test-card" data-str-id="4">
+                  <div class="string-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div class="string-name">String #4</div>
+                  <span class="string-status-badge status-normal">Normal</span>
+                </div>
+                <div class="string-test-card" data-str-id="5">
+                  <div class="string-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div class="string-name">String #5</div>
+                  <span class="string-status-badge status-normal">Normal</span>
+                </div>
+                <div class="string-test-card" data-str-id="6">
+                  <div class="string-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div class="string-name">String #6</div>
+                  <span class="string-status-badge status-normal">Normal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnostic Readings Box -->
+            <div class="diagnostic-meter-display">
+              <div class="diag-title">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span id="diagTitleStr">String #3 Diagnostic</span>
+              </div>
+
+              <div class="diag-readings-list">
+                <div class="diag-item">
+                  <span class="label">Open Circuit Voltage (Voc):</span>
+                  <span class="val" id="diagVoc">412 V</span>
+                </div>
+                <div class="diag-item">
+                  <span class="label">Short Circuit Current (Isc):</span>
+                  <span class="val" id="diagIsc">3.1 A</span>
+                </div>
+                <div class="diag-item">
+                  <span class="label">Module Operating Temp:</span>
+                  <span class="val" id="diagTemp">58.4 °C</span>
+                </div>
+                <div class="diag-item">
+                  <span class="label">Earth Resistance (ERT Test):</span>
+                  <span class="val gold" id="diagErt">7.8 Ω</span>
+                </div>
+                <div class="diag-item">
+                  <span class="label">Fault Analysis:</span>
+                  <span class="val" id="diagStatus" style="color: #ef4444;">Diode / Earth Fault</span>
+                </div>
+              </div>
+
+              <button class="btn-rectify-fault" id="btnRectifyFault">
+                ⚡ Auto-Rectify String Fault & Normalize ERT
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- LAB 3: Dual-Axis Solar Tracker Simulator -->
+        <div class="lab-view-panel" id="tab-tracker">
+          <div class="tracker-sim-grid">
+            <div class="tracker-canvas-box">
+              <canvas id="tracker-canvas"></canvas>
+            </div>
+
+            <div class="tracker-readouts">
+              <div class="tracker-gauge-card">
+                <div class="gauge-header">
+                  <span>Sun Tracking Alignment Efficiency</span>
+                  <strong style="color: var(--solar-gold);" id="trackerEffVal">99.8%</strong>
+                </div>
+                <div class="gauge-bar-bg">
+                  <div class="gauge-bar-fill" id="trackerEffFill" style="width: 99.8%;"></div>
+                </div>
+              </div>
+
+              <div class="tracker-gauge-card">
+                <div class="gauge-header">
+                  <span>Real-Time PV Generation Yield</span>
+                  <strong style="color: var(--cyan-neon);" id="trackerWattsVal">539 W</strong>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                  Automatic dual-axis alignment ensures optimal perpendicular solar irradiance angle, generating up to <strong>+35% higher energy yield</strong> compared to fixed-tilt installations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PROFESSIONAL EXPERIENCE SECTION
+         ========================================== -->
+    <section class="section-wrapper" id="experience">
+      <div class="section-header-center">
+        <div class="section-pill-tag">
+          <i class="fa-solid fa-briefcase"></i>
+          <span>Track Record & Leadership</span>
+        </div>
+        <h2 class="section-main-heading">
+          PROFESSIONAL <span>EXPERIENCE</span>
+        </h2>
+        <p class="section-subtext">
+          Hands-on site engineering and operations leadership across high-stakes renewable energy power plants and mission-critical logistics networks.
+        </p>
+      </div>
+
+      <div class="experience-timeline">
+        
+        <!-- Experience 1: Fryble Pvt Ltd -->
+        <div class="timeline-item">
+          <div class="timeline-node-icon"><i class="fa-solid fa-solar-panel"></i></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3 class="job-role-title">Solar O&M Engineer</h3>
+                <div class="company-name">
+                  <span>Fryble Pvt. Ltd.</span>
+                  <span class="company-location">• Mumbai, India</span>
+                </div>
+              </div>
+              <span class="job-duration-badge">June 2026 — Present</span>
+            </div>
+
+            <ul class="job-bullets-list">
+              <li>Managing complete Operations & Maintenance (O&M) activities for <strong>15 solar power plants (200–500 kW capacity)</strong>.</li>
+              <li>Executed comprehensive <strong>Preventive Maintenance (PM)</strong> and <strong>Corrective Maintenance (CM)</strong> regimes to maximize generation uptime and plant reliability.</li>
+              <li>Conducted string testing, IV-curve fault analysis, and rapid rectification of disconnected or faulty solar module strings.</li>
+              <li>Configured and troubleshot solar central/string inverters, resolving communication and RS485/Modbus communication faults.</li>
+              <li>Performed <strong>Earth Resistance Testing (ERT)</strong>, ensuring electrical grounding values strictly met safety regulations (< 5.0 Ω).</li>
+              <li>Monitored generation data via SCADA systems, implementing active yield enhancement strategies.</li>
+              <li>Planned and supervised scheduled module cleaning cycles and prepared Daily Progress Reports (DPR).</li>
+            </ul>
+
+            <div class="job-tech-pills">
+              <span class="tech-pill">Solar PV O&M</span>
+              <span class="tech-pill">Preventive Maintenance (PM)</span>
+              <span class="tech-pill">Corrective Maintenance (CM)</span>
+              <span class="tech-pill">String Testing</span>
+              <span class="tech-pill">Inverter Troubleshooting</span>
+              <span class="tech-pill">Earth Resistance Testing (ERT)</span>
+              <span class="tech-pill">DPR Reporting</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience 2: Delhivery Ltd -->
+        <div class="timeline-item">
+          <div class="timeline-node-icon"><i class="fa-solid fa-people-roof"></i></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3 class="job-role-title">Team Leader</h3>
+                <div class="company-name">
+                  <span>Delhivery Ltd</span>
+                  <span class="company-location">• Waidhan (M.P.), India</span>
+                </div>
+              </div>
+              <span class="job-duration-badge">Jan 2025 — April 2026</span>
+            </div>
+
+            <ul class="job-bullets-list">
+              <li>Led and directed <strong>40+ site manpower and technicians</strong> for daily high-volume operations processing ~3000+ units/day.</li>
+              <li>Executed systematic shift planning, workload distribution, and achieved 100% daily operational output targets.</li>
+              <li>Maintained strict site discipline, workplace safety compliance, and achieved a consistent record of zero operational failures.</li>
+              <li>Bridged seamless coordination between ground execution crew, site supervisors, and upper management.</li>
+              <li>Prepared daily performance and progress reports adhering to industrial EPC DPR standards.</li>
+            </ul>
+
+            <div class="job-tech-pills">
+              <span class="tech-pill">Manpower Management (40+ Crew)</span>
+              <span class="tech-pill">Shift Planning</span>
+              <span class="tech-pill">Safety Compliance</span>
+              <span class="tech-pill">EPC Reporting (DPR)</span>
+              <span class="tech-pill">Operational Efficiency</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience 3: Ecom Express Ltd -->
+        <div class="timeline-item">
+          <div class="timeline-node-icon"><i class="fa-solid fa-truck-fast"></i></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3 class="job-role-title">DC Head (Distribution Center)</h3>
+                <div class="company-name">
+                  <span>Ecom Express Ltd</span>
+                  <span class="company-location">• Jabalpur (M.P.), India</span>
+                </div>
+              </div>
+              <span class="job-duration-badge">Sep 2024 — Jan 2025</span>
+            </div>
+
+            <ul class="job-bullets-list">
+              <li>Headed distribution center last-mile operations during high-volume peak festival demand.</li>
+              <li>Managed workforce allocation, fleet scheduling, and expeditious bottleneck escalation closure.</li>
+              <li>Elevated key performance indicators (KPIs) and maintained over <strong>90%+ service efficiency benchmark</strong>.</li>
+            </ul>
+
+            <div class="job-tech-pills">
+              <span class="tech-pill">Operations Leadership</span>
+              <span class="tech-pill">KPI Optimization</span>
+              <span class="tech-pill">Escalation Closure</span>
+              <span class="tech-pill">High-Volume Management</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TECHNICAL PROJECTS SECTION
+         ========================================== -->
+    <section class="section-wrapper" id="projects">
+      <div class="section-header-center">
+        <div class="section-pill-tag">
+          <i class="fa-solid fa-diagram-project"></i>
+          <span>Engineering Innovations</span>
+        </div>
+        <h2 class="section-main-heading">
+          KEY TECHNICAL <span>PROJECTS</span>
+        </h2>
+        <p class="section-subtext">
+          Detailed engineering designs spanning PVsyst solar power modeling, smart power electronic inverters, and automated dual-axis trackers.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+        
+        <!-- Project 1: 5kW On-Grid PVsyst -->
+        <div class="project-card">
+          <div class="project-media-banner">
+            <div class="project-schematic-bg"></div>
+            <i class="fa-solid fa-solar-panel project-hero-icon"></i>
+            <span class="project-type-chip">PVsyst Modeling</span>
+          </div>
+
+          <div class="project-content-body">
+            <h3 class="project-title">5kW On-Grid Solar Power Plant Design</h3>
+            <p class="project-desc">
+              Comprehensive design and engineering simulation of a 5kW grid-connected rooftop solar PV system using <strong>PVsyst</strong> software. Included generation yield analysis, inverter string sizing, 3D shadow analysis, cable sizing, and complete single-line diagram (SLD) layout.
+            </p>
+
+            <div class="project-metrics-row">
+              <div class="p-metric-item">
+                <div class="p-lbl">System Size</div>
+                <div class="p-val">5.0 kWp</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">Software</div>
+                <div class="p-val">PVsyst / CAD</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">Annual Yield</div>
+                <div class="p-val">7,850 kWh</div>
+              </div>
+            </div>
+
+            <div class="project-footer-tags">
+              <span class="tech-pill">PVsyst Simulation</span>
+              <span class="tech-pill">Inverter Sizing</span>
+              <span class="tech-pill">Shadow Analysis</span>
+              <span class="tech-pill">Electrical SLD</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Smart Pure Sine Wave Inverter -->
+        <div class="project-card">
+          <div class="project-media-banner">
+            <div class="project-schematic-bg"></div>
+            <i class="fa-solid fa-microchip project-hero-icon" style="color: var(--cyan-neon);"></i>
+            <span class="project-type-chip" style="border-color: var(--cyan-neon); color: var(--cyan-neon);">Power Electronics</span>
+          </div>
+
+          <div class="project-content-body">
+            <h3 class="project-title">Smart Pure Sine Wave Inverter Development</h3>
+            <p class="project-desc">
+              Engineered a high-efficiency <strong>12V DC to 220V AC Pure Sine Wave Inverter</strong> hardware prototype. Implemented microcontroller-based SPWM modulation, MOSFET H-bridge switching, battery overcharge/deep-discharge protection circuits, and ultra-low Total Harmonic Distortion (THD < 3%).
+            </p>
+
+            <div class="project-metrics-row">
+              <div class="p-metric-item">
+                <div class="p-lbl">Input / Output</div>
+                <div class="p-val">12V DC → 220V AC</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">Modulation</div>
+                <div class="p-val">SPWM / MOSFET</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">THD Level</div>
+                <div class="p-val">< 3.0%</div>
+              </div>
+            </div>
+
+            <div class="project-footer-tags">
+              <span class="tech-pill">Pure Sine Wave</span>
+              <span class="tech-pill">MOSFET H-Bridge</span>
+              <span class="tech-pill">Microcontroller SPWM</span>
+              <span class="tech-pill">Protection Circuits</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Rotating Solar Tracking System -->
+        <div class="project-card">
+          <div class="project-media-banner">
+            <div class="project-schematic-bg"></div>
+            <i class="fa-solid fa-arrows-spin project-hero-icon" style="color: var(--emerald-grid);"></i>
+            <span class="project-type-chip" style="border-color: var(--emerald-grid); color: var(--emerald-grid);">Automation / IoT</span>
+          </div>
+
+          <div class="project-content-body">
+            <h3 class="project-title">Rotating Solar Panel Tracking System</h3>
+            <p class="project-desc">
+              Developed an automated dual-axis solar tracking prototype utilizing light-dependent resistor (LDR) sensor arrays and servo motor actuators. Automatically tracks sun orientation across azimuth and elevation angles, boosting overall energy harvest by up to 25–35%.
+            </p>
+
+            <div class="project-metrics-row">
+              <div class="p-metric-item">
+                <div class="p-lbl">Mechanism</div>
+                <div class="p-val">Dual-Axis LDR</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">Controller</div>
+                <div class="p-val">Embedded MCU</div>
+              </div>
+              <div class="p-metric-item">
+                <div class="p-lbl">Yield Gain</div>
+                <div class="p-val">+25% to +35%</div>
+              </div>
+            </div>
+
+            <div class="project-footer-tags">
+              <span class="tech-pill">Dual-Axis Tracker</span>
+              <span class="tech-pill">LDR Array</span>
+              <span class="tech-pill">Embedded Systems</span>
+              <span class="tech-pill">Yield Optimization</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SKILLS & COMPETENCIES SECTION
+         ========================================== -->
+    <section class="section-wrapper" id="skills">
+      <div class="section-header-center">
+        <div class="section-pill-tag">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Engineering Proficiency</span>
+        </div>
+        <h2 class="section-main-heading">
+          SKILLS & <span>COMPETENCIES</span>
+        </h2>
+        <p class="section-subtext">
+          Demonstrated technical and managerial skills acquired across real-world power plant operations and academic master's studies.
+        </p>
+      </div>
+
+      <div class="skills-wrapper-grid">
+        
+        <!-- Category 1: Solar PV O&M & Diagnostics -->
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><i class="fa-solid fa-solar-panel"></i></div>
+            <h3 class="skill-cat-title">Solar PV O&M & Diagnostics</h3>
+          </div>
+
+          <div class="skill-meters-list">
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Preventive & Corrective Maintenance (PM/CM)</span>
+                <span class="skill-pct">95%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 95%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">String Testing & Fault Rectification</span>
+                <span class="skill-pct">92%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 92%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Inverter Troubleshooting & Modbus/RS485</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Earth Resistance Testing (ERT) & Safety</span>
+                <span class="skill-pct">94%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 94%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2: Site Supervision & Management -->
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><i class="fa-solid fa-users-gear"></i></div>
+            <h3 class="skill-cat-title">Operations & Site Leadership</h3>
+          </div>
+
+          <div class="skill-meters-list">
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">40+ Manpower Management & Shift Planning</span>
+                <span class="skill-pct">94%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 94%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Plant Performance & Generation Optimization</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Daily Progress Reporting (DPR) & Documentation</span>
+                <span class="skill-pct">96%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 96%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Site Safety Standards & Compliance</span>
+                <span class="skill-pct">92%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 92%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3: Engineering Software & Electronics -->
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h3 class="skill-cat-title">Engineering Tools & Software</h3>
+          </div>
+
+          <div class="skill-meters-list">
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">PVsyst (Solar PV Modeling)</span>
+                <span class="skill-pct">88%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">MATLAB & Digital Signal Analysis</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 85%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">AutoCAD (Electrical Layouts & SLD)</span>
+                <span class="skill-pct">82%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 82%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-meter-row">
+              <div class="skill-info-header">
+                <span class="skill-name">Advanced MS Excel & Data Analytics</span>
+                <span class="skill-pct">95%</span>
+              </div>
+              <div class="skill-track-bar">
+                <div class="skill-progress-fill" style="width: 95%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         EDUCATION & CERTIFICATIONS SECTION
+         ========================================== -->
+    <section class="section-wrapper" id="education">
+      <div class="edu-achieve-grid">
+        
+        <!-- Left Column: Education -->
+        <div>
+          <h3 class="column-title">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>ACADEMIC BACKGROUND</span>
+          </h3>
+
+          <div class="edu-list">
+            <!-- Master of Engineering -->
+            <div class="edu-card">
+              <h4 class="edu-degree">M.E. in Digital Communication</h4>
+              <div class="edu-institution">Ujjain Engineering College (UEC), Ujjain, M.P.</div>
+              <div class="edu-badge-row">
+                <span class="cgpa-pill">CGPA: 7.67</span>
+                <span class="edu-year">July 2022 — June 2024</span>
+              </div>
+            </div>
+
+            <!-- Bachelor of Technology -->
+            <div class="edu-card">
+              <h4 class="edu-degree">B.Tech in Electrical and Electronics</h4>
+              <div class="edu-institution">Rajiv Gandhi Proudyogiki Vishwavidyalaya (RGPV), Bhopal, M.P.</div>
+              <div class="edu-badge-row">
+                <span class="cgpa-pill">CGPA: 8.39 (First Class Dist.)</span>
+                <span class="edu-year">July 2018 — June 2022</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Certifications & Honors -->
+        <div>
+          <h3 class="column-title">
+            <i class="fa-solid fa-trophy"></i>
+            <span>HONORS & CERTIFICATIONS</span>
+          </h3>
+
+          <div class="cert-list">
+            <!-- GATE 2021 -->
+            <div class="cert-card gold-cert">
+              <div class="cert-badge-icon"><i class="fa-solid fa-award"></i></div>
+              <div class="cert-info">
+                <h4>GATE 2021 Qualified</h4>
+                <p>National Level Engineering Aptitude Test</p>
+              </div>
+            </div>
+
+            <!-- State Level Rank -->
+            <div class="cert-card gold-cert">
+              <div class="cert-badge-icon"><i class="fa-solid fa-medal"></i></div>
+              <div class="cert-info">
+                <h4>3rd Rank — Srijan State Level EX Model (2020)</h4>
+                <p>State-wide Electrical & Innovation Engineering Exhibition</p>
+              </div>
+            </div>
+
+            <!-- Cisco CCNA -->
+            <div class="cert-card">
+              <div class="cert-badge-icon"><i class="fa-solid fa-network-wired"></i></div>
+              <div class="cert-info">
+                <h4>CCNA v7: Introduction to Networks</h4>
+                <p>Cisco Certified (July 2021)</p>
+              </div>
+            </div>
+
+            <!-- Cisco IoT -->
+            <div class="cert-card">
+              <div class="cert-badge-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+              <div class="cert-info">
+                <h4>Introduction to IoT</h4>
+                <p>Cisco Certified (June 2021)</p>
+              </div>
+            </div>
+
+            <!-- Eagle Foundation -->
+            <div class="cert-card">
+              <div class="cert-badge-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+              <div class="cert-info">
+                <h4>Solar & Electrical System Training</h4>
+                <p>Eagle Foundation (2020)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Languages & Location Strip -->
+      <div class="lang-location-box">
+        <div class="lang-group">
+          <span class="lang-label"><i class="fa-solid fa-language"></i> LANGUAGES:</span>
+          <span class="lang-chip">English</span>
+          <span class="lang-chip">Hindi</span>
+          <span class="lang-chip">Pahari (Kangra H.P.)</span>
+          <span class="lang-chip">Punjabi</span>
+        </div>
+
+        <div class="location-group">
+          <i class="fa-solid fa-map-location-dot" style="color: var(--solar-gold); font-size: 18px;"></i>
+          <span>Current Location: <strong>Kangra, Himachal Pradesh, India</strong> (Open to Relocation)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         HIRE ME & RECRUITER CONTACT SECTION
+         ========================================== -->
+    <section class="section-wrapper" id="contact">
+      <div class="contact-section-card">
+        <div class="contact-layout-grid">
+          
+          <!-- Left Column Info -->
+          <div class="contact-info-col">
+            <div>
+              <div class="contact-tag">⚡ GET IN TOUCH / HIRE RAJNEESH</div>
+              <h2 class="contact-headline">Let’s Build High-Yield Clean Energy Solutions.</h2>
+              <p class="contact-subtext">
+                I am actively open to high-impact opportunities in <strong>Solar PV O&M Engineering</strong>, Site Operations Management, and Renewable EPC. Reach out directly via call, email, or WhatsApp.
+              </p>
+            </div>
+
+            <div class="contact-direct-items">
+              <!-- Email -->
+              <a href="mailto:rajnees.choudhari@gmail.com" class="contact-pill-item">
+                <div class="contact-icon-box"><i class="fa-solid fa-envelope"></i></div>
+                <div class="contact-text-box">
+                  <div class="c-lbl">Official Email</div>
+                  <div class="c-val">rajnees.choudhari@gmail.com</div>
+                </div>
+              </a>
+
+              <!-- Phone -->
+              <a href="tel:+916261612684" class="contact-pill-item">
+                <div class="contact-icon-box"><i class="fa-solid fa-phone"></i></div>
+                <div class="contact-text-box">
+                  <div class="c-lbl">Direct Contact Number</div>
+                  <div class="c-val">+91 6261612684</div>
+                </div>
+              </a>
+
+              <!-- WhatsApp Direct -->
+              <a href="https://wa.me/916261612684?text=Hi%20Rajneesh,%20we%20reviewed%20your%20Solar%20Engineering%20portfolio" target="_blank" class="contact-pill-item">
+                <div class="contact-icon-box" style="color:#25d366; border-color:#25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="contact-text-box">
+                  <div class="c-lbl">Instant WhatsApp Chat</div>
+                  <div class="c-val">Chat with Rajneesh</div>
+                </div>
+              </a>
+            </div>
+
+            <div>
+              <a href="resume.pdf" download="Rajneesh_Choudhary_Resume.pdf" class="btn-primary-solar" style="width: 100%; justify-content: center;">
+                <i class="fa-solid fa-download"></i>
+                <span>Download Resume (PDF)</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column Form -->
+          <div class="contact-form-col">
+            <h3 style="font-family: var(--font-heading); font-size: 18px; color: var(--solar-gold); margin-bottom: 20px;">
+              <i class="fa-solid fa-paper-plane"></i> Quick Message / Inquiries
+            </h3>
+
+            <form id="contactDirectForm">
+              <div class="form-group">
+                <label class="form-label">Your Name / Organization</label>
+                <input type="text" class="form-input" placeholder="e.g. Adani Solar / Tata Power / Recruiter" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Your Email Address</label>
+                <input type="email" class="form-input" placeholder="e.g. hr@company.com" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Subject / Role Description</label>
+                <input type="text" class="form-input" placeholder="e.g. Solar O&M Engineer Role" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Message Details</label>
+                <textarea class="form-textarea" placeholder="Provide job details, plant site location, or interview schedule..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-form-submit">
+                <span>Send Direct Inquiry 🚀</span>
+              </button>
+
+              <div class="form-status-alert" id="contactStatusAlert"></div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="site-footer">
+    <div class="main-wrapper">
+      <div class="footer-content">
+        <div class="footer-copy">
+          © 2026 <strong>Rajneesh Choudhary</strong>. All rights reserved. • Solar & Electrical Engineer
+        </div>
+        <div class="footer-links-row">
+          <a href="#hero" class="footer-link">Back to Top ↑</a>
+          <a href="resume.pdf" class="footer-link" download>Download PDF</a>
+          <a href="mailto:rajnees.choudhari@gmail.com" class="footer-link">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       RECRUITER HIRE ME MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="hireModal">
+    <div class="modal-card-box">
+      <button class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div class="logo-badge-icon" style="margin: 0 auto 12px; width: 56px; height: 56px; font-size: 28px;">
+          <i class="fa-solid fa-handshake"></i>
+        </div>
+        <h2 style="font-family: var(--font-heading); font-size: 22px; color: #ffffff; margin-bottom: 6px;">
+          HIRE <span>RAJNEESH CHOUDHARY</span>
+        </h2>
+        <p style="font-size: 13px; color: var(--text-secondary);">
+          Electrical & Electronics Engineer • GATE Qualified • 15 Solar Plants O&M
+        </p>
+      </div>
+
+      <div class="contact-direct-items" style="margin-bottom: 24px;">
+        <a href="tel:+916261612684" class="contact-pill-item">
+          <div class="contact-icon-box"><i class="fa-solid fa-phone"></i></div>
+          <div class="contact-text-box">
+            <div class="c-lbl">Direct Phone</div>
+            <div class="c-val">+91 6261612684</div>
+          </div>
+        </a>
+
+        <a href="mailto:rajnees.choudhari@gmail.com?subject=Job%20Opportunity%20-%20Solar%20O%26M%20Engineer" class="contact-pill-item">
+          <div class="contact-icon-box"><i class="fa-solid fa-envelope"></i></div>
+          <div class="contact-text-box">
+            <div class="c-lbl">Direct Email</div>
+            <div class="c-val">rajnees.choudhari@gmail.com</div>
+          </div>
+        </a>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <a href="resume.pdf" download="Rajneesh_Choudhary_Resume.pdf" class="btn-primary-solar" style="flex: 1; justify-content: center;">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>Download Resume</span>
+        </a>
+        <button class="btn-ghost-contact btn-modal-dismiss" style="padding: 0 20px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Main Interactive JavaScript -->
+  <script src="main.js"></script>
+</body>
+</html>
