@@ -1,8 +1,18 @@
 import os
+import socket
 import smtplib
 import requests
 from email.message import EmailMessage
 from flask import Flask, render_template, request, jsonify
+
+# ---------------- FORCE IPv4 (Fixes Render [Errno 101] Network is unreachable) ----------------
+orig_getaddrinfo = socket.getaddrinfo
+
+def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    return orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+
+socket.getaddrinfo = getaddrinfo_ipv4
+# -----------------------------------------------------------------------------------------------
 
 # Helper functions to get clean config settings
 def get_sender_email():
@@ -166,27 +176,50 @@ def send_email():
     success_count = 0
 
     try:
-        # Connect to SMTP once and send to all receivers
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=25) as smtp:
-            smtp.login(sender, password)
+        # Connect to SMTP (tries Port 587 with STARTTLS, then Port 465 with SSL)
+        smtp_connected = False
+        smtp_server = None
 
-            for receiver in receivers:
-                msg = EmailMessage()
-                msg["Subject"] = custom_subject
-                msg["From"] = sender
-                msg["To"] = receiver
-                msg.set_content(custom_body)
+        # Attempt 1: Port 587 (Standard for Cloud Hosts)
+        try:
+            smtp_server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+            smtp_server.ehlo()
+            smtp_server.starttls()
+            smtp_server.ehlo()
+            smtp_server.login(sender, password)
+            smtp_connected = True
+        except Exception as e587:
+            print(f"Port 587 failed: {e587}, trying port 465...")
 
-                # Attach Resume
-                msg.add_attachment(
-                    resume_data,
-                    maintype="application",
-                    subtype="pdf",
-                    filename="Rajneesh_Choudhary_Resume.pdf"
-                )
+        # Attempt 2: Port 465 (SSL)
+        if not smtp_connected:
+            smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20)
+            smtp_server.login(sender, password)
+            smtp_connected = True
 
-                smtp.send_message(msg)
-                success_count += 1
+        # Send all emails through open connection
+        for receiver in receivers:
+            msg = EmailMessage()
+            msg["Subject"] = custom_subject
+            msg["From"] = sender
+            msg["To"] = receiver
+            msg.set_content(custom_body)
+
+            # Attach Resume
+            msg.add_attachment(
+                resume_data,
+                maintype="application",
+                subtype="pdf",
+                filename="Rajneesh_Choudhary_Resume.pdf"
+            )
+
+            smtp_server.send_message(msg)
+            success_count += 1
+
+        try:
+            smtp_server.quit()
+        except Exception:
+            pass
 
         return jsonify({
             "success": True,
