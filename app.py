@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import messagebox
 import smtplib
@@ -8,8 +9,8 @@ SENDER_EMAIL = "rajnees.choudhari@gmail.com"
 APP_PASSWORD = "babhiblmcaepweeo"
 # ------------------------------------------------
 
-# Fixed Resume Path
-resume_path = "resume.pdf"
+# Fixed Resume Path (Always finds resume.pdf next to app.py)
+resume_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resume.pdf")
 
 
 # Send Mail Function
