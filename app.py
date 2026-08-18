@@ -4,16 +4,22 @@ import requests
 from email.message import EmailMessage
 from flask import Flask, render_template, request, jsonify
 
-# ---------------- SETTINGS ----------------
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "rajnees.choudhari@gmail.com")
-APP_PASSWORD = os.environ.get("APP_PASSWORD", "babhiblmcaepweeo")
-PANEL_PASSWORD = os.environ.get("PANEL_PASSWORD", "solar27")
-# ------------------------------------------
+# Helper functions to get clean config settings
+def get_sender_email():
+    return os.environ.get("SENDER_EMAIL", "rajnees.choudhari@gmail.com").strip()
+
+def get_app_password():
+    return os.environ.get("APP_PASSWORD", "babhiblmcaepweeo").strip().replace(" ", "")
+
+def get_panel_password():
+    return os.environ.get("PANEL_PASSWORD", "solar27").strip()
 
 # Google Drive Resume Link
-# Website se bhi update kar sakte ho, ya Render pe RESUME_URL env variable set karo.
 app_state = {
-    "resume_url": os.environ.get("RESUME_URL", "https://drive.google.com/file/d/1Uqpnxcekhy1pSZgCfC2uPEftnyQzm2Lr/view?usp=sharing")
+    "resume_url": os.environ.get(
+        "RESUME_URL", 
+        "https://drive.google.com/file/d/1Uqpnxcekhy1pSZgCfC2uPEftnyQzm2Lr/view?usp=sharing"
+    ).strip()
 }
 
 # Local fallback resume path
@@ -24,7 +30,7 @@ app = Flask(__name__)
 
 def get_drive_direct_link(share_link):
     """Convert Google Drive share link to direct download link."""
-    # Extract file ID from various Google Drive URL formats
+    share_link = share_link.strip()
     if "drive.google.com" in share_link:
         if "/file/d/" in share_link:
             file_id = share_link.split("/file/d/")[1].split("/")[0]
@@ -45,12 +51,15 @@ def download_resume():
             response.raise_for_status()
             return response.content
         except Exception as e:
-            print(f"Google Drive download failed: {e}, trying local file...")
+            print(f"Google Drive download error: {e}")
 
     # Fallback: local resume.pdf
     if os.path.exists(LOCAL_RESUME_PATH):
-        with open(LOCAL_RESUME_PATH, "rb") as f:
-            return f.read()
+        try:
+            with open(LOCAL_RESUME_PATH, "rb") as f:
+                return f.read()
+        except Exception as e:
+            print(f"Local file read error: {e}")
 
     return None
 
@@ -75,7 +84,7 @@ def get_link():
 # Update resume link from UI
 @app.route("/update-link", methods=["POST"])
 def update_link():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     new_url = data.get("resume_url", "").strip()
 
     if not new_url:
@@ -91,9 +100,9 @@ def update_link():
 # Verify panel access password
 @app.route("/verify-access", methods=["POST"])
 def verify_access():
-    data = request.get_json()
-    password = data.get("password", "")
-    if password == PANEL_PASSWORD:
+    data = request.get_json(silent=True) or {}
+    password = data.get("password", "").strip()
+    if password == get_panel_password():
         return jsonify({"success": True})
     return jsonify({"success": False, "message": "Invalid password"})
 
@@ -101,7 +110,7 @@ def verify_access():
 # Send Email API
 @app.route("/send", methods=["POST"])
 def send_email():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     emails_text = data.get("emails", "").strip()
 
     if not emails_text:
@@ -116,24 +125,25 @@ def send_email():
     # Download resume first
     resume_data = download_resume()
     if not resume_data:
-        return jsonify({"success": False, "message": "Resume not found! Please set RESUME_URL or place resume.pdf in app folder."})
+        return jsonify({"success": False, "message": "Resume not found! Please check RESUME_URL or place resume.pdf in app folder."})
 
+    sender = get_sender_email()
+    password = get_app_password()
     success_count = 0
 
     try:
-        for receiver in receivers:
+        # Connect to SMTP once and send to all receivers
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=25) as smtp:
+            smtp.login(sender, password)
 
-            # Email setup
-            msg = EmailMessage()
+            for receiver in receivers:
+                msg = EmailMessage()
+                msg["Subject"] = "Application for Job Opportunities"
+                msg["From"] = sender
+                msg["To"] = receiver
 
-            msg["Subject"] = "Application for Job Opportunities"
-
-            msg["From"] = SENDER_EMAIL
-            msg["To"] = receiver
-
-            # Email Body
-            body = f"""
-Dear Hiring Team,
+                # Email Body
+                body = """Dear Hiring Team,
 
 I am Rajneesh Choudhary. I have completed my B.Tech in Electrical & Electronics Engineering from RGPV Bhopal and M.Tech in Digital Communication from Ujjain Engineering College, Ujjain.
 
@@ -146,23 +156,18 @@ Rajneesh Choudhary
 +91 6261612684
 rajnees.choudhari@gmail.com
 """
+                msg.set_content(body)
 
-            msg.set_content(body)
+                # Attach Resume
+                msg.add_attachment(
+                    resume_data,
+                    maintype="application",
+                    subtype="pdf",
+                    filename="Rajneesh_Choudhary_Resume.pdf"
+                )
 
-            # Attach Resume (from Google Drive or local)
-            msg.add_attachment(
-                resume_data,
-                maintype="application",
-                subtype="pdf",
-                filename="Rajneesh_Choudhary_Resume.pdf"
-            )
-
-            # Send Mail
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-                smtp.login(SENDER_EMAIL, APP_PASSWORD)
                 smtp.send_message(msg)
-
-            success_count += 1
+                success_count += 1
 
         return jsonify({
             "success": True,
