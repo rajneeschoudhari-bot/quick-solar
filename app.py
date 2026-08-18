@@ -7,13 +7,13 @@ from flask import Flask, render_template, request, jsonify
 # ---------------- SETTINGS ----------------
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "rajnees.choudhari@gmail.com")
 APP_PASSWORD = os.environ.get("APP_PASSWORD", "dvbkeywhbeduoxjb")
-PANEL_PASSWORD = os.environ.get("PANEL_PASSWORD", "quicksolar2026")
+PANEL_PASSWORD = os.environ.get("PANEL_PASSWORD", "solar27")
 # ------------------------------------------
 
 # Google Drive Resume Link
 # Website se bhi update kar sakte ho, ya Render pe RESUME_URL env variable set karo.
 app_state = {
-    "resume_url": os.environ.get("RESUME_URL", "")
+    "resume_url": os.environ.get("RESUME_URL", "https://drive.google.com/file/d/1Uqpnxcekhy1pSZgCfC2uPEftnyQzm2Lr/view?usp=sharing")
 }
 
 # Local fallback resume path
