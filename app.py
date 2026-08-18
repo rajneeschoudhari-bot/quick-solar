@@ -14,12 +14,37 @@ def get_app_password():
 def get_panel_password():
     return os.environ.get("PANEL_PASSWORD", "solar27").strip()
 
+# Default High-Impact Email Subject & Body
+DEFAULT_SUBJECT = "Application for Solar / O&M Engineer Role - Rajneesh Choudhary"
+
+DEFAULT_BODY = """Dear Hiring Team,
+
+I am an Electrical & Electronics Engineer (GATE Qualified) with hands-on experience in Solar PV Operations & Maintenance (O&M) and site management.
+
+Key highlights of my experience:
+• Managing O&M across 15 solar power plants (200–500 kW)
+• Expertise in Preventive & Corrective Maintenance (PM/CM), plant generation optimization, and ERT testing
+• Skilled in solar inverter troubleshooting, string testing, and fault rectification
+• Strong operational background managing 40+ site manpower and daily reporting (DPR)
+
+I am looking for suitable opportunities in your organization where I can contribute effectively to plant efficiency and operations.
+
+Please find my resume attached for your review. I look forward to hearing from you.
+
+Best regards,
+Rajneesh Choudhary
++91 6261612684
+rajnees.choudhari@gmail.com
+"""
+
 # Google Drive Resume Link
 app_state = {
     "resume_url": os.environ.get(
         "RESUME_URL", 
         "https://drive.google.com/file/d/1Uqpnxcekhy1pSZgCfC2uPEftnyQzm2Lr/view?usp=sharing"
-    ).strip()
+    ).strip(),
+    "subject": DEFAULT_SUBJECT,
+    "body": DEFAULT_BODY
 }
 
 # Local fallback resume path
@@ -72,29 +97,36 @@ def home():
     return render_template("index.html", has_resume=has_resume, resume_source=resume_source)
 
 
-# Get current resume link
+# Get current settings
 @app.route("/get-link")
 def get_link():
     return jsonify({
         "resume_url": app_state["resume_url"],
-        "source": "Google Drive" if app_state["resume_url"] else "Local File"
+        "source": "Google Drive" if app_state["resume_url"] else "Local File",
+        "subject": app_state.get("subject", DEFAULT_SUBJECT),
+        "body": app_state.get("body", DEFAULT_BODY)
     })
 
 
-# Update resume link from UI
+# Update resume link and template from UI
 @app.route("/update-link", methods=["POST"])
 def update_link():
     data = request.get_json(silent=True) or {}
     new_url = data.get("resume_url", "").strip()
+    new_subject = data.get("subject", "").strip()
+    new_body = data.get("body", "").strip()
 
-    if not new_url:
-        return jsonify({"success": False, "message": "Please enter a Google Drive link!"})
+    if new_url:
+        if "drive.google.com" not in new_url:
+            return jsonify({"success": False, "message": "Yeh Google Drive link nahi hai! Please valid Drive link daalo."})
+        app_state["resume_url"] = new_url
 
-    if "drive.google.com" not in new_url:
-        return jsonify({"success": False, "message": "Yeh Google Drive link nahi hai! Please valid Drive link daalo."})
+    if new_subject:
+        app_state["subject"] = new_subject
+    if new_body:
+        app_state["body"] = new_body
 
-    app_state["resume_url"] = new_url
-    return jsonify({"success": True, "message": "Resume link updated successfully! ✅"})
+    return jsonify({"success": True, "message": "Settings updated successfully! ✅"})
 
 
 # Verify panel access password
@@ -112,6 +144,8 @@ def verify_access():
 def send_email():
     data = request.get_json(silent=True) or {}
     emails_text = data.get("emails", "").strip()
+    custom_subject = data.get("subject", "").strip() or app_state.get("subject", DEFAULT_SUBJECT)
+    custom_body = data.get("body", "").strip() or app_state.get("body", DEFAULT_BODY)
 
     if not emails_text:
         return jsonify({"success": False, "message": "Please enter HR emails"})
@@ -138,25 +172,10 @@ def send_email():
 
             for receiver in receivers:
                 msg = EmailMessage()
-                msg["Subject"] = "Application for Job Opportunities"
+                msg["Subject"] = custom_subject
                 msg["From"] = sender
                 msg["To"] = receiver
-
-                # Email Body
-                body = """Dear Hiring Team,
-
-I am Rajneesh Choudhary. I have completed my B.Tech in Electrical & Electronics Engineering from RGPV Bhopal and M.Tech in Digital Communication from Ujjain Engineering College, Ujjain.
-
-I have experience in team handling, coordination, and reporting, along with knowledge of solar PV systems and electrical fundamentals. I am looking for suitable opportunities in your organization.
-
-Please find my resume attached for your consideration.
-
-Best regards,
-Rajneesh Choudhary
-+91 6261612684
-rajnees.choudhari@gmail.com
-"""
-                msg.set_content(body)
+                msg.set_content(custom_body)
 
                 # Attach Resume
                 msg.add_attachment(

@@ -737,9 +737,21 @@
 
             <hr class="divider">
 
+            <!-- Email Subject & Pitch -->
+            <label>📌 Email Subject</label>
+            <input type="text" id="emailSubject" placeholder="Application for Solar / O&M Engineer Role">
+
+            <label>📝 Email Body (Short & Experienced)</label>
+            <textarea id="emailBody" style="height: 140px; font-size: 12px; line-height: 1.4;"></textarea>
+
+            <button class="btn-action" style="background:#4a5568;color:#fff;" onclick="saveTemplate()">💾 Save Email Template</button>
+            <div class="panel-status" id="templateStatus"></div>
+
+            <hr class="divider">
+
             <!-- Send Emails -->
             <label>✉️ HR Emails (comma separated)</label>
-            <textarea id="emails" placeholder="hr@company1.com, hr@company2.com"></textarea>
+            <textarea id="emails" placeholder="hr@company1.com, hr@company2.com" style="height: 80px;"></textarea>
             <button class="btn-action btn-send-mail" id="sendBtn" onclick="sendEmails()">🚀 Send Emails</button>
             <div class="panel-status" id="mailStatus"></div>
 
@@ -804,7 +816,7 @@
             document.getElementById('mailerOverlay').classList.remove('active');
         }
 
-        // ===== LOAD CURRENT LINK =====
+        // ===== LOAD CURRENT SETTINGS =====
         async function loadCurrentLink() {
             try {
                 const res = await fetch('/get-link');
@@ -815,6 +827,12 @@
                     document.getElementById('resumeLink').value = data.resume_url;
                 } else {
                     info.textContent = '📁 Resume: Local File (set Drive link below)';
+                }
+                if (data.subject) {
+                    document.getElementById('emailSubject').value = data.subject;
+                }
+                if (data.body) {
+                    document.getElementById('emailBody').value = data.body;
                 }
             } catch (e) {
                 document.getElementById('sourceInfo').textContent = '⚠️ Could not load status';
@@ -841,9 +859,30 @@
             }
         }
 
+        // ===== SAVE EMAIL TEMPLATE =====
+        async function saveTemplate() {
+            const subject = document.getElementById('emailSubject').value.trim();
+            const body = document.getElementById('emailBody').value.trim();
+            const st = document.getElementById('templateStatus');
+            try {
+                const res = await fetch('/update-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject: subject, body: body })
+                });
+                const data = await res.json();
+                st.className = data.success ? 'panel-status s-ok' : 'panel-status s-err';
+                st.textContent = data.message;
+            } catch (e) {
+                st.className='panel-status s-err'; st.textContent='Network error!';
+            }
+        }
+
         // ===== SEND EMAILS =====
         async function sendEmails() {
             const emailsText = document.getElementById('emails').value.trim();
+            const subjectText = document.getElementById('emailSubject').value.trim();
+            const bodyText = document.getElementById('emailBody').value.trim();
             const st = document.getElementById('mailStatus');
             const btn = document.getElementById('sendBtn');
 
@@ -858,7 +897,11 @@
                 const res = await fetch('/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ emails: emailsText })
+                    body: JSON.stringify({ 
+                        emails: emailsText,
+                        subject: subjectText,
+                        body: bodyText
+                    })
                 });
                 const data = await res.json();
                 if (data.success) {
