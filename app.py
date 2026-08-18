@@ -1,9 +1,10 @@
 import os
+import io
 import socket
 import smtplib
 import requests
 from email.message import EmailMessage
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file, Response
 
 # ---------------- FORCE IPv4 (Fixes Render [Errno 101] Network is unreachable) ----------------
 orig_getaddrinfo = socket.getaddrinfo
