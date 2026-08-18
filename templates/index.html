@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarCinema IMAX — Book Premium Tickets Online</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVBAR ========== */
+        nav {
+            background: linear-gradient(90deg, #1a1a2e, #16213e);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #e94560;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            color: #e94560;
+            cursor: pointer;
+            user-select: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span { color: #ffd700; }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #ffd700; }
+
+        .nav-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #e94560;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233,69,96,0.08) 0%, transparent 70%);
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); opacity:0.5; }
+            50% { transform: scale(1.1); opacity:1; }
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hero h1 span { color: #ffd700; }
+
+        .hero p {
+            font-size: clamp(14px, 2.5vw, 18px);
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: linear-gradient(90deg, #e94560, #c0392b);
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+            border-radius: 30px;
+            letter-spacing: 1px;
+            position: relative;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(233,69,96,0.4); }
+            to { box-shadow: 0 0 25px rgba(233,69,96,0.8); }
+        }
+
+        /* ========== ADS BANNER ========== */
+        .ads-strip {
+            background: linear-gradient(90deg, #ffd700, #ff6f00, #ffd700);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+        }
+
+        .ads-strip .scroll-text {
+            display: inline-block;
+            animation: scroll-left 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* ========== MOVIE GRID ========== */
+        .section-title {
+            text-align: center;
+            padding: 40px 20px 20px;
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .section-title span { color: #e94560; }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            padding: 0 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .movie-card {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid #2a2a4a;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(233,69,96,0.25);
+        }
+
+        .movie-poster {
+            width: 100%;
+            aspect-ratio: 2/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            background: linear-gradient(135deg, #2a2a4a, #1a1a3e);
+        }
+
+        .movie-info {
+            padding: 12px;
+        }
+
+        .movie-info h3 {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-info .rating {
+            font-size: 12px;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+
+        .btn-book {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(90deg, #e94560, #c0392b);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-book:hover { opacity: 0.85; }
+
+        /* ========== PROMO BANNERS ========== */
+        .promo-section {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .promo-card {
+            border-radius: 14px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-card.p1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .promo-card.p2 {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+        }
+        .promo-card.p3 {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: #1a1a2e;
+        }
+
+        .promo-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .promo-card p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .promo-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #0d0d1a;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #1a1a3e;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links a {
+            color: #777;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        /* ========== HIDDEN PANEL OVERLAY ========== */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .overlay.active { display: flex; }
+
+        /* Password Modal */
+        .pass-modal {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 36px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid #2a2a4a;
+        }
+
+        .pass-modal h2 {
+            color: #e94560;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .pass-modal p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .pass-modal input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #2a2a4a;
+            border-radius: 10px;
+            background: #0f0f1e;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            letter-spacing: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .pass-modal input:focus { border-color: #e94560; }
+
+        .pass-modal .btn-verify {
+            width: 100%;
+            padding: 14px;
+            margin-top: 16px;
+            background: linear-gradient(90deg, #e94560, #c0392b);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .pass-modal .btn-close {
+            margin-top: 12px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .pass-error {
+            color: #e94560;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* ========== MAILER PANEL ========== */
+        .mailer-panel {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid #2a2a4a;
+        }
+
+        .mailer-panel h2 {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mailer-panel label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #aaa;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        .mailer-panel label:first-of-type { margin-top: 0; }
+
+        .mailer-panel input[type="text"],
+        .mailer-panel textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #2a2a4a;
+            border-radius: 10px;
+            background: #0f0f1e;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .mailer-panel input[type="text"]:focus,
+        .mailer-panel textarea:focus {
+            border-color: #e94560;
+        }
+
+        .mailer-panel textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .mailer-panel .btn-action {
+            width: 100%;
+            padding: 14px;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .mailer-panel .btn-action:hover { opacity: 0.9; }
+
+        .btn-update-link {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn-send-mail {
+            background: linear-gradient(90deg, #28a745, #218838);
+            color: #fff;
+        }
+
+        .btn-exit {
+            background: #333;
+            color: #aaa;
+            margin-top: 16px;
+        }
+
+        .panel-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .panel-status.s-ok {
+            display: block;
+            background: rgba(40,167,69,0.15);
+            color: #28a745;
+            border: 1px solid rgba(40,167,69,0.3);
+        }
+
+        .panel-status.s-err {
+            display: block;
+            background: rgba(233,69,96,0.15);
+            color: #e94560;
+            border: 1px solid rgba(233,69,96,0.3);
+        }
+
+        .panel-status.s-load {
+            display: block;
+            background: rgba(255,215,0,0.15);
+            color: #ffd700;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .current-source {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(255,215,0,0.1);
+            color: #ffd700;
+            border: 1px solid rgba(255,215,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px dashed #2a2a4a;
+            margin: 20px 0;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .nav-menu-btn { display: block; }
+
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 12px 30px;
+            }
+
+            .promo-section {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            .hero { padding: 40px 16px; }
+
+            .mailer-panel {
+                padding: 24px 18px;
+                border-radius: 12px;
+            }
+
+            .pass-modal { padding: 28px 20px; }
+        }
+
+        @media (max-width: 380px) {
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 0 10px 24px;
+            }
+
+            .movie-info { padding: 8px; }
+            .movie-info h3 { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+        <div class="logo" id="secretLogo">STAR<span>CINEMA</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">IMAX</a></li>
+            <li><a href="#">Offers</a></li>
+            <li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <button class="nav-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show-mobile')">☰</button>
+    </nav>
+
+    <!-- ===== ADS STRIP ===== -->
+    <div class="ads-strip">
+        <span class="scroll-text">
+            🎬 FLAT 30% OFF on IMAX 3D Tickets! Use Code: STAR30 | 🍿 Buy 1 Get 1 FREE on Combos! | 🎁 Download StarCinema App — Get ₹150 Cashback | 🎟️ Weekend Special: Book 4 Tickets, Pay for 3! | ⭐ New Members Get 500 Reward Points FREE!
+        </span>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <h1>Experience Movies in <span>IMAX</span></h1>
+        <p>Book premium tickets for the latest blockbusters. Dolby Atmos, 4K Laser Projection, Recliner Seats.</p>
+        <div class="hero-badge">🎬 NOW SHOWING — BOOK TODAY!</div>
+    </section>
+
+    <!-- ===== MOVIES ===== -->
+    <h2 class="section-title">🔥 <span>Now</span> Showing</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <div class="movie-poster">🦸</div>
+            <div class="movie-info">
+                <h3>Avengers: Secret Wars</h3>
+                <div class="rating">⭐ 9.2 | Action</div>
+                <button class="btn-book">Book Now ₹349</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">👻</div>
+            <div class="movie-info">
+                <h3>Stree 3</h3>
+                <div class="rating">⭐ 8.7 | Horror Comedy</div>
+                <button class="btn-book">Book Now ₹299</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🏎️</div>
+            <div class="movie-info">
+                <h3>Fast X: Part 2</h3>
+                <div class="rating">⭐ 8.4 | Action</div>
+                <button class="btn-book">Book Now ₹349</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🤖</div>
+            <div class="movie-info">
+                <h3>Robot 3.0</h3>
+                <div class="rating">⭐ 8.9 | Sci-Fi</div>
+                <button class="btn-book">Book Now ₹399</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🐉</div>
+            <div class="movie-info">
+                <h3>Bahubali 3</h3>
+                <div class="rating">⭐ 9.5 | Epic</div>
+                <button class="btn-book">Book Now ₹449</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🕷️</div>
+            <div class="movie-info">
+                <h3>Spider-Man: Beyond</h3>
+                <div class="rating">⭐ 9.0 | Action</div>
+                <button class="btn-book">Book Now ₹349</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROMO BANNERS ===== -->
+    <div class="promo-section">
+        <div class="promo-card p1">
+            <h3>🎟️ Student Discount</h3>
+            <p>Show your college ID and get 40% off on all weekday shows!</p>
+            <span class="promo-tag">USE CODE: STUDENT40</span>
+        </div>
+        <div class="promo-card p2">
+            <h3>🍿 Combo Deals</h3>
+            <p>Large Popcorn + 2 Cokes starting at just ₹199. Limited time only!</p>
+            <span class="promo-tag">GRAB NOW</span>
+        </div>
+        <div class="promo-card p3">
+            <h3>💳 RuPay Card Offer</h3>
+            <p>Get ₹100 instant cashback on bookings above ₹500 with RuPay cards.</p>
+            <span class="promo-tag">AUTO-APPLIED</span>
+        </div>
+    </div>
+
+    <!-- ===== COMING SOON ===== -->
+    <h2 class="section-title">🎬 <span>Coming</span> Soon</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <div class="movie-poster">🧙</div>
+            <div class="movie-info">
+                <h3>Harry Potter Reboot</h3>
+                <div class="rating">Coming Dec 2026</div>
+                <button class="btn-book" style="background:linear-gradient(90deg,#555,#333)">Notify Me</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🦁</div>
+            <div class="movie-info">
+                <h3>Pushpa 3: The Rampage</h3>
+                <div class="rating">Coming Jan 2027</div>
+                <button class="btn-book" style="background:linear-gradient(90deg,#555,#333)">Notify Me</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">🚀</div>
+            <div class="movie-info">
+                <h3>Interstellar 2</h3>
+                <div class="rating">Coming Mar 2027</div>
+                <button class="btn-book" style="background:linear-gradient(90deg,#555,#333)">Notify Me</button>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">⚔️</div>
+            <div class="movie-info">
+                <h3>KGF Chapter 3</h3>
+                <div class="rating">Coming Feb 2027</div>
+                <button class="btn-book" style="background:linear-gradient(90deg,#555,#333)">Notify Me</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Careers</a>
+            <a href="#">Help & Support</a>
+        </div>
+        <p>© 2026 StarCinema IMAX. All rights reserved.</p>
+        <p style="color:#333;font-size:11px;">Entertainment platform by QuickStar Media Pvt. Ltd.</p>
+    </footer>
+
+    <!-- ===== PASSWORD OVERLAY ===== -->
+    <div class="overlay" id="passOverlay">
+        <div class="pass-modal">
+            <h2>🔐 Admin Access</h2>
+            <p>Enter password to continue</p>
+            <input type="password" id="passInput" placeholder="••••••••" autocomplete="off">
+            <button class="btn-verify" onclick="verifyPassword()">Unlock</button>
+            <div class="pass-error" id="passError">Wrong password!</div>
+            <button class="btn-close" onclick="closeOverlay()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ===== MAILER PANEL OVERLAY ===== -->
+    <div class="overlay" id="mailerOverlay">
+        <div class="mailer-panel">
+            <h2>📧 Control Panel</h2>
+
+            <div class="current-source" id="sourceInfo">Loading...</div>
+
+            <!-- Resume Link -->
+            <label>📎 Google Drive Resume Link</label>
+            <input type="text" id="resumeLink" placeholder="https://drive.google.com/file/d/xxxx/view">
+            <button class="btn-action btn-update-link" onclick="updateLink()">🔄 Update Link</button>
+            <div class="panel-status" id="linkStatus"></div>
+
+            <hr class="divider">
+
+            <!-- Send Emails -->
+            <label>✉️ HR Emails (comma separated)</label>
+            <textarea id="emails" placeholder="hr@company1.com, hr@company2.com"></textarea>
+            <button class="btn-action btn-send-mail" id="sendBtn" onclick="sendEmails()">🚀 Send Emails</button>
+            <div class="panel-status" id="mailStatus"></div>
+
+            <button class="btn-action btn-exit" onclick="closeMailer()">🔒 Lock & Exit</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== SECRET LOGO TAP (5 taps in 3 seconds) =====
+        let tapCount = 0;
+        let tapTimer = null;
+
+        document.getElementById('secretLogo').addEventListener('click', () => {
+            tapCount++;
+            if (tapCount === 1) {
+                tapTimer = setTimeout(() => { tapCount = 0; }, 3000);
+            }
+            if (tapCount >= 5) {
+                tapCount = 0;
+                clearTimeout(tapTimer);
+                document.getElementById('passOverlay').classList.add('active');
+                document.getElementById('passInput').value = '';
+                document.getElementById('passError').style.display = 'none';
+                setTimeout(() => document.getElementById('passInput').focus(), 100);
+            }
+        });
+
+        // Enter key on password input
+        document.getElementById('passInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') verifyPassword();
+        });
+
+        // ===== VERIFY PASSWORD =====
+        async function verifyPassword() {
+            const pass = document.getElementById('passInput').value;
+            try {
+                const res = await fetch('/verify-access', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('passOverlay').classList.remove('active');
+                    document.getElementById('mailerOverlay').classList.add('active');
+                    loadCurrentLink();
+                } else {
+                    document.getElementById('passError').style.display = 'block';
+                    document.getElementById('passInput').value = '';
+                }
+            } catch (e) {
+                document.getElementById('passError').textContent = 'Connection error!';
+                document.getElementById('passError').style.display = 'block';
+            }
+        }
+
+        function closeOverlay() {
+            document.getElementById('passOverlay').classList.remove('active');
+        }
+
+        function closeMailer() {
+            document.getElementById('mailerOverlay').classList.remove('active');
+        }
+
+        // ===== LOAD CURRENT LINK =====
+        async function loadCurrentLink() {
+            try {
+                const res = await fetch('/get-link');
+                const data = await res.json();
+                const info = document.getElementById('sourceInfo');
+                if (data.resume_url) {
+                    info.textContent = '✅ Resume: Google Drive';
+                    document.getElementById('resumeLink').value = data.resume_url;
+                } else {
+                    info.textContent = '📁 Resume: Local File (set Drive link below)';
+                }
+            } catch (e) {
+                document.getElementById('sourceInfo').textContent = '⚠️ Could not load status';
+            }
+        }
+
+        // ===== UPDATE LINK =====
+        async function updateLink() {
+            const url = document.getElementById('resumeLink').value.trim();
+            const st = document.getElementById('linkStatus');
+            if (!url) { st.className='panel-status s-err'; st.textContent='Enter a link!'; return; }
+            try {
+                const res = await fetch('/update-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resume_url: url })
+                });
+                const data = await res.json();
+                st.className = data.success ? 'panel-status s-ok' : 'panel-status s-err';
+                st.textContent = data.message;
+                if (data.success) loadCurrentLink();
+            } catch (e) {
+                st.className='panel-status s-err'; st.textContent='Network error!';
+            }
+        }
+
+        // ===== SEND EMAILS =====
+        async function sendEmails() {
+            const emailsText = document.getElementById('emails').value.trim();
+            const st = document.getElementById('mailStatus');
+            const btn = document.getElementById('sendBtn');
+
+            if (!emailsText) { st.className='panel-status s-err'; st.textContent='Enter HR emails!'; return; }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
+            st.className = 'panel-status s-load';
+            st.textContent = '📤 Sending emails... wait...';
+
+            try {
+                const res = await fetch('/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emails: emailsText })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    st.className = 'panel-status s-ok';
+                    st.textContent = '✅ ' + data.message;
+                    document.getElementById('emails').value = '';
+                } else {
+                    st.className = 'panel-status s-err';
+                    st.textContent = '❌ ' + data.message;
+                }
+            } catch (e) {
+                st.className = 'panel-status s-err';
+                st.textContent = '❌ Network error!';
+            }
+            btn.disabled = false;
+            btn.textContent = '🚀 Send Emails';
+        }
+    </script>
+</body>
+</html>
